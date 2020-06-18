@@ -11,9 +11,7 @@ import javax.sql.DataSource;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.services.filters.KeycloakSessionServletFilter;
-import org.keycloak.services.listeners.KeycloakSessionDestroyListener;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,69 +20,59 @@ import org.springframework.context.annotation.Configuration;
 public class EmbeddedKeycloakConfig {
 
 	@Bean
-	ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(
+	ServletRegistrationBean keycloakJaxRsApplication(
 			KeycloakServerProperties keycloakServerProperties, DataSource dataSource) throws Exception {
 
 		mockJndiEnvironment(dataSource);
 		EmbeddedKeycloakApplication.keycloakServerProperties = keycloakServerProperties;
-
-		ServletRegistrationBean<HttpServlet30Dispatcher> servlet = new ServletRegistrationBean<>(
+		ServletRegistrationBean servlet = new ServletRegistrationBean<>(
 				new HttpServlet30Dispatcher());
-		servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
+		servlet.addInitParameter("javax.ws.rs.Application",
+				EmbeddedKeycloakApplication.class.getName());
 		servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX,
 				keycloakServerProperties.getContextPath());
-		servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS, "true");
+		servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS,
+				"true");
 		servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/*");
 		servlet.setLoadOnStartup(1);
 		servlet.setAsyncSupported(true);
-
 		return servlet;
 	}
 
 	@Bean
-	ServletListenerRegistrationBean<KeycloakSessionDestroyListener> keycloakSessionDestroyListener() {
-		return new ServletListenerRegistrationBean<>(new KeycloakSessionDestroyListener());
-	}
-
-	@Bean
-	FilterRegistrationBean<KeycloakSessionServletFilter> keycloakSessionManagement(
+	FilterRegistrationBean keycloakSessionManagement(
 			KeycloakServerProperties keycloakServerProperties) {
-
-		FilterRegistrationBean<KeycloakSessionServletFilter> filter = new FilterRegistrationBean<>();
+		FilterRegistrationBean filter = new FilterRegistrationBean<>();
 		filter.setName("Keycloak Session Management");
 		filter.setFilter(new KeycloakSessionServletFilter());
 		filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/*");
-
 		return filter;
 	}
 
 	private void mockJndiEnvironment(DataSource dataSource) throws NamingException {
-		NamingManager.setInitialContextFactoryBuilder((env) -> (environment) -> new InitialContext() {
+		NamingManager.setInitialContextFactoryBuilder(
+				(env) -> (environment) -> new InitialContext() {
+					@Override
+					public Object lookup(Name name) {
+						return lookup(name.toString());
+					}
 
-			@Override
-			public Object lookup(Name name) {
-				return lookup(name.toString());
-			}
+					@Override
+					public Object lookup(String name) {
+						if ("spring/datasource".equals(name)) {
+							return dataSource;
+						}
+						return null;
+					}
 
-			@Override
-			public Object lookup(String name) {
+					@Override
+					public NameParser getNameParser(String name) {
+						return CompositeName::new;
+					}
 
-				if ("spring/datasource".equals(name)) {
-					return dataSource;
-				}
-
-				return null;
-			}
-
-			@Override
-			public NameParser getNameParser(String name) {
-				return CompositeName::new;
-			}
-
-			@Override
-			public void close() {
-				// NOOP
-			}
-		});
+					@Override
+					public void close() {
+					}
+				});
 	}
 }

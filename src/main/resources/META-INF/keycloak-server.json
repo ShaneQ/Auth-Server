@@ -1,62 +1,52 @@
 {
     "hostname": {
         "provider": "request",
-
         "fixed": {
             "hostname": "${keycloak.override.hostname:localhost}",
             "httpPort": "${keycloak.override.httpPort:-1}",
             "httpsPort": "${keycloak.override.httpsPort:-1}"
         }
     },
-
     "admin": {
         "realm": "master"
     },
-
     "eventsStore": {
         "provider": "${keycloak.eventsStore.provider:jpa}",
         "jpa": {
-            "exclude-events": [ "REFRESH_TOKEN" ]
+            "exclude-events": [
+                "REFRESH_TOKEN"
+            ]
         }
     },
-
     "eventsListener": {
-        "jboss-logging" : {
+        "jboss-logging": {
             "success-level": "debug",
             "error-level": "warn"
         }
     },
-
     "realm": {
         "provider": "${keycloak.realm.provider:jpa}"
     },
-
     "user": {
         "provider": "${keycloak.user.provider:jpa}"
     },
-
     "userFederatedStorage": {
         "provider": "${keycloak.userFederatedStorage.provider:jpa}"
     },
-
     "userSessionPersister": {
         "provider": "${keycloak.userSessionPersister.provider:jpa}"
     },
-
     "authorizationPersister": {
         "provider": "${keycloak.authorization.provider:jpa}"
     },
-
     "userCache": {
-        "default" : {
+        "default": {
             "enabled": true
         }
     },
-
     "timer": {
         "provider": "basic"
     },
-
     "theme": {
         "staticMaxAge": "${keycloak.theme.staticMaxAge:2592000}",
         "cacheTemplates": "${keycloak.theme.cacheTemplates:true}",
@@ -65,19 +55,18 @@
             "dir": "${keycloak.theme.dir}"
         }
     },
-
     "scheduled": {
         "interval": 900
     },
-
     "connectionsHttpClient": {
-        "default": {}
-    },
+        "default": {
 
+        }
+    },
     "connectionsJpa": {
         "provider": "default",
         "default": {
-            "dataSource":"spring/datasource",
+            "dataSource": "spring/datasource",
             "url": "${env.KEYCLOAK_DATABASE_URL:jdbc:h2:./target/keycloak}",
             "driver": "${keycloak.connectionsJpa.driver:org.h2.Driver}",
             "driverDialect": "${keycloak.connectionsJpa.driverDialect:}",
@@ -90,37 +79,23 @@
             "globalStatsInterval": "${keycloak.connectionsJpa.globalStatsInterval:-1}"
         }
     },
-
     "realmCache": {
-        "default" : {
+        "default": {
             "enabled": true
         }
     },
-
     "connectionsInfinispan": {
         "default": {
-            "jgroupsUdpMcastAddr": "${keycloak.connectionsInfinispan.jgroupsUdpMcastAddr:234.56.78.90}",
-            "nodeName": "${keycloak.connectionsInfinispan.nodeName,jboss.node.name:}",
-            "siteName": "${keycloak.connectionsInfinispan.siteName,jboss.site.name:}",
-            "clustered": "${keycloak.connectionsInfinispan.clustered:false}",
-            "async": "${keycloak.connectionsInfinispan.async:false}",
-            "sessionsOwners": "${keycloak.connectionsInfinispan.sessionsOwners:1}",
-            "l1Lifespan": "${keycloak.connectionsInfinispan.l1Lifespan:600000}",
-            "remoteStoreEnabled": "${keycloak.connectionsInfinispan.remoteStoreEnabled:false}",
-            "remoteStoreHost": "${keycloak.connectionsInfinispan.remoteStoreHost:localhost}",
-            "remoteStorePort": "${keycloak.connectionsInfinispan.remoteStorePort:11222}",
-            "hotrodProtocolVersion": "${keycloak.connectionsInfinispan.hotrodProtocolVersion}"
+            "embedded": "true"
         }
     },
-
     "scripting": {
-    },
 
+    },
     "jta-lookup": {
         "provider": "${keycloak.jta.lookup.provider:jboss}",
-        "jboss" : {
+        "jboss": {
             "enabled": true
         }
-
     }
 }
