@@ -20,8 +20,8 @@
     },
     "eventsListener": {
         "jboss-logging": {
-            "success-level": "debug",
-            "error-level": "warn"
+            "success-level": "info",
+            "error-level": "info"
         }
     },
     "realm": {
