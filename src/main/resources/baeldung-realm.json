@@ -1,6 +1,6 @@
 {
-  "id" : "baeldung",
-  "realm" : "baeldung",
+  "id" : "secondClosetClub",
+  "realm" : "secondClosetClub",
   "notBefore" : 0,
   "revokeRefreshToken" : false,
   "refreshTokenMaxReuse" : 0,
