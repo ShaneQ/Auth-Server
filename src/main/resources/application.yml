@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    username: sa
-    password: admin
-    url: jdbc:h2:mem:testdb
+    username: admin
+    password: TEST
+    url: jdbc:mysql://scc.cm208wdfje8i.us-east-2.rds.amazonaws.com:3306/auth
 
 keycloak:
   server:
