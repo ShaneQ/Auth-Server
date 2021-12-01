@@ -18,5 +18,6 @@ Steps to make it a functioning enviornment
 3. Valid Redirect Uris
     - http://localhost:8089/loading*
     -http://localhost:8089/base/*
+    - http://localhost:8089/
 
 4.WebOrigins is + which means all the valid redirect Uris will be allowed
