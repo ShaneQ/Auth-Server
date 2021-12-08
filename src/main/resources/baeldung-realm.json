@@ -62,7 +62,7 @@
       "attributes" : { }
     } ],
     "client" : {
-      "newClient" : [ ],
+      "frontEnd" : [ ],
       "realm-management" : [ {
         "id" : "5d00243f-ceec-4b0c-995e-d86d5b8a0ae6",
         "name" : "view-clients",
@@ -426,15 +426,17 @@
     "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
   }, {
     "id" : "b88ce206-63d6-43b6-87c9-ea09d8c02f32",
-    "clientId" : "newClient",
+    "clientId" : "frontEnd",
     "surrogateAuthRequired" : false,
     "enabled" : true,
     "clientAuthenticatorType" : "client-secret",
     "secret" : "newClientSecret",
     "redirectUris" : [
       "http://localhost:8089/",
-      "http://localhost:8089/base/*",
-      "http://localhost:8089/loading*"],
+      "http://localhost:8089/*",
+      "http://localhost:8090/",
+      "http://localhost:8090/*"
+    ],
     "webOrigins" : ["+"],
     "notBefore" : 0,
     "bearerOnly" : false,
@@ -464,8 +466,8 @@
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : false,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "role_list", "profile","read" ],
-    "optionalClientScopes" : [ "web-origins", "address", "phone", "roles", "offline_access", "microprofile-jwt", "write", "email" ]
+    "defaultClientScopes" : [ "role_list", "profile","read","web-origins", "roles"],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt", "write", "email" ]
   }, {
     "id" : "6a4bfbd0-576d-4778-af56-56f876647355",
     "clientId" : "realm-management",
